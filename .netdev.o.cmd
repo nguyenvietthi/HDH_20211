@@ -1,0 +1,1 @@
+cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.o := ld -m elf_x86_64    -r -o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o

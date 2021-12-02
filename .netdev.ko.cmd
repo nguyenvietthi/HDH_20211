@@ -1,0 +1,1 @@
+cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.ko := ld -r -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.ko /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.mod.o;  true

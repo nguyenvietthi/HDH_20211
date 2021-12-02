@@ -1,0 +1,1 @@
+cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.mod := { echo  /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o;  echo; } > /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.mod
