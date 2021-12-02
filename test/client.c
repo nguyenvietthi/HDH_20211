@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <net/if.h>
-
+#include <unistd.h>
 #include <string.h>
 
 
@@ -30,8 +29,8 @@ int main(int argc, char *argv[])
 
 	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_port = htons(5001);
-	if (inet_pton(AF_INET, "172.16.100.1", &serv_addr.sin_addr) <= 0) {
+	serv_addr.sin_port = htons(5000);
+	if (inet_pton(AF_INET, "199.199.100.1", &serv_addr.sin_addr) <= 0) {
 		perror("inet_pton() failed\n");
 		exit(1);
 	}
