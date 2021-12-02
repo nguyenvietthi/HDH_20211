@@ -1,1 +1,1 @@
-cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/modules.order := {   echo /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/netdev.ko; :; } | awk '!x[$$0]++' - > /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/modules.order
+cmd_/home/thinv/HDH_20211/modules.order := {   echo /home/thinv/HDH_20211/netdev.ko; :; } | awk '!x[$$0]++' - > /home/thinv/HDH_20211/modules.order

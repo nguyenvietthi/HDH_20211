@@ -1,8 +1,8 @@
-cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := gcc -Wp,-MMD,/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/.main.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include  -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -Iubuntu/include  -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wimplicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -gsplit-dwarf -gdwarf-4 -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -std=gnu99 -DENABLE_DEBUG -DDEBUG  -DMODULE  -DKBUILD_BASENAME='"main"' -DKBUILD_MODNAME='"netdev"' -c -o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.c
+cmd_/home/thinv/HDH_20211/main.o := gcc -Wp,-MMD,/home/thinv/HDH_20211/.main.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include  -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -Iubuntu/include  -include ./include/linux/compiler_types.h -D__KERNEL__ -fmacro-prefix-map=./= -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wimplicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -gdwarf-4 -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -std=gnu99 -DENABLE_DEBUG -DDEBUG  -DMODULE  -DKBUILD_BASENAME='"main"' -DKBUILD_MODNAME='"netdev"' -c -o /home/thinv/HDH_20211/main.o /home/thinv/HDH_20211/main.c
 
-source_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.c
+source_/home/thinv/HDH_20211/main.o := /home/thinv/HDH_20211/main.c
 
-deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := \
+deps_/home/thinv/HDH_20211/main.o := \
   include/linux/kconfig.h \
     $(wildcard include/config/cc/version/text.h) \
     $(wildcard include/config/cpu/big/endian.h) \
@@ -16,6 +16,7 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/arm64.h) \
     $(wildcard include/config/retpoline.h) \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
+    $(wildcard include/config/kcov.h) \
   include/linux/kernel.h \
     $(wildcard include/config/preempt/voluntary.h) \
     $(wildcard include/config/debug/atomic/sleep.h) \
@@ -115,7 +116,6 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/x86/intel/memory/protection/keys.h) \
     $(wildcard include/config/x86/5level.h) \
     $(wildcard include/config/page/table/isolation.h) \
-    $(wildcard include/config/iommu/support.h) \
     $(wildcard include/config/x86/sgx.h) \
   include/asm-generic/bitops/const_hweight.h \
   include/asm-generic/bitops/instrumented-atomic.h \
@@ -400,6 +400,7 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/zsmalloc.h) \
     $(wildcard include/config/shadow/call/stack.h) \
     $(wildcard include/config/memcg.h) \
+    $(wildcard include/config/need/multiple/nodes.h) \
     $(wildcard include/config/memory/hotplug.h) \
     $(wildcard include/config/compaction.h) \
     $(wildcard include/config/transparent/hugepage.h) \
@@ -407,7 +408,6 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/page/extension.h) \
     $(wildcard include/config/deferred/struct/page/init.h) \
     $(wildcard include/config/have/memoryless/nodes.h) \
-    $(wildcard include/config/need/multiple/nodes.h) \
     $(wildcard include/config/sparsemem/extreme.h) \
     $(wildcard include/config/memory/hotremove.h) \
     $(wildcard include/config/have/arch/pfn/valid.h) \
@@ -509,6 +509,7 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/aio.h) \
     $(wildcard include/config/mmu/notifier.h) \
     $(wildcard include/config/arch/want/batched/unmap/tlb/flush.h) \
+    $(wildcard include/config/iommu/support.h) \
   include/linux/mm_types_task.h \
     $(wildcard include/config/split/ptlock/cpus.h) \
     $(wildcard include/config/arch/enable/split/pmd/ptlock.h) \
@@ -525,7 +526,7 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/no/hz/full.h) \
     $(wildcard include/config/rcu/nocb/cpu.h) \
     $(wildcard include/config/tasks/rcu.h) \
-    $(wildcard include/config/tasks/rcu/trace.h) \
+    $(wildcard include/config/tasks/trace/rcu.h) \
     $(wildcard include/config/tasks/rude/rcu.h) \
     $(wildcard include/config/tree/rcu.h) \
     $(wildcard include/config/debug/objects/rcu/head.h) \
@@ -826,7 +827,6 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/net/redirect.h) \
     $(wildcard include/config/net/rx/busy/poll.h) \
     $(wildcard include/config/network/secmark.h) \
-    $(wildcard include/config/kcov.h) \
     $(wildcard include/config/network/phy/timestamping.h) \
     $(wildcard include/config/netfilter/xt/target/trace.h) \
   include/linux/bvec.h \
@@ -884,7 +884,6 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
     $(wildcard include/config/kmap/local.h) \
     $(wildcard include/config/cgroup/sched.h) \
     $(wildcard include/config/blk/dev/io/trace.h) \
-    $(wildcard include/config/tasks/trace/rcu.h) \
     $(wildcard include/config/psi.h) \
     $(wildcard include/config/compat/brk.h) \
     $(wildcard include/config/cgroups.h) \
@@ -1438,8 +1437,11 @@ deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o := 
   include/net/arp.h \
   include/uapi/linux/in_route.h \
   include/uapi/linux/route.h \
-  /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.h \
+  include/net/lwtunnel.h \
+    $(wildcard include/config/lwtunnel.h) \
+  include/uapi/linux/lwtunnel.h \
+  /home/thinv/HDH_20211/main.h \
 
-/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o: $(deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o)
+/home/thinv/HDH_20211/main.o: $(deps_/home/thinv/HDH_20211/main.o)
 
-$(deps_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/main.o):
+$(deps_/home/thinv/HDH_20211/main.o):

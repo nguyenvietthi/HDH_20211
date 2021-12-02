@@ -1,1 +1,1 @@
-cmd_/media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/Module.symvers := sed 's/ko$$/o/' /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/modules.order | scripts/mod/modpost -m -a   -o /media/thinv0/DATA/HDH/btl/test/Linux-Device-Driver/eg_30_netdev/Module.symvers -e -i Module.symvers   -T -
+cmd_/home/thinv/HDH_20211/Module.symvers := sed 's/ko$$/o/' /home/thinv/HDH_20211/modules.order | scripts/mod/modpost -m -a   -o /home/thinv/HDH_20211/Module.symvers -e -i Module.symvers   -T -
