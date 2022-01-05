@@ -13,6 +13,10 @@ int main(int argc, char *argv[])
 	int sk;
 	struct ifreq ifr;
 	struct sockaddr_in serv_addr;
+	char client_buf[1024];
+	char server_buf[1024];
+	char check[]="exit";
+	
 
 	sk = socket(AF_INET, SOCK_STREAM, 0);
 	if (sk < 0) {
@@ -39,10 +43,27 @@ int main(int argc, char *argv[])
 		perror("Connect failed\n");
 		exit(1);
 	}
-
-	send(sk, "hello world!", 13, 0);
-
-	close(sk);
+	else {
+		while(1){
+			memset(client_buf, 0, 1024);
+			printf("client: ");
+			fgets(client_buf,1024,stdin);
+			if(strncmp(client_buf,check,4)==0){
+				close(sk);
+				break;
+			}
+			send(sk,client_buf,1024,0);
+	
+			memset(server_buf, 0, 1024);
+			recv(sk, server_buf, 1024, 0);
+			if(server_buf[0]==0){
+				close(sk);
+				break;
+			}
+			printf("server: %s", server_buf);
+			
+		}
+	}
 
 	return 0;
 }

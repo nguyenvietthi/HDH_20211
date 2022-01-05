@@ -10,7 +10,9 @@
 int main(int argc, char *argv[])
 {
 	int rv, sk, confd;
-	char buf[1024];
+	char client_buf[1024];
+	char server_buf[1024];
+	char check[]="exit";
 	struct ifreq ifr;
 	struct sockaddr_in serv_addr;
 	int addrlen = sizeof(serv_addr); 
@@ -44,23 +46,33 @@ int main(int argc, char *argv[])
 		perror("listen failed\n");
 		exit(1);
 	}
-
+	confd = accept(sk, (struct sockaddr*)&serv_addr, (socklen_t*)&addrlen);	
+	printf("accept ==== \n");
+	char str_cli_ip[INET_ADDRSTRLEN];
+	struct sockaddr_in* ip_client = (struct sockaddr_in*)&serv_addr;
+	inet_ntop(AF_INET, &ip_client->sin_addr, str_cli_ip, INET_ADDRSTRLEN);
+	printf("ipclient: %s\n", str_cli_ip );
+	char str_cli_port[INET_ADDRSTRLEN];
+	printf("port: %d\n", ntohs(ip_client->sin_port));
 	while (1) {
-		
-		confd = accept(sk, (struct sockaddr*)&serv_addr, (socklen_t*)&addrlen);	
-		printf("accept ==== \n");
-		char str_cli_ip[INET_ADDRSTRLEN];
-		struct sockaddr_in* ip_client = (struct sockaddr_in*)&serv_addr;
-		inet_ntop(AF_INET, &ip_client->sin_addr, str_cli_ip, INET_ADDRSTRLEN);
-		printf("ipclient: %s\n", str_cli_ip );
-		char str_cli_port[INET_ADDRSTRLEN];
-		printf("port: %d\n", ntohs(ip_client->sin_port));
-		memset(buf, 0, 1024);
-		recv(confd, buf, 1024, 0);
-		printf("msg: %s\n", buf);
+		memset(client_buf, 0, 1024);
+		recv(confd, client_buf, 1024, 0);
+		if(client_buf[0]==0){
+			close(sk);
+			break;
+		}
+		printf("client: %s", client_buf);
+		memset(server_buf, 0, 1024);
+		printf("server: ");
+		fgets(server_buf,1024,stdin);
+		if(strncmp(server_buf,check,4)==0){
+			break;
+			close(sk);
+		}
+		send(confd,server_buf,1024,0);
 	}
 
-	close(sk);
+
 
 	return 0;
 }
