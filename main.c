@@ -66,7 +66,7 @@ void ldd_release_buffer(struct snull_packet *pkt)
 	spin_unlock_irqrestore(&snull_priv->lock, flags); // mo khoa ngat va thuc hien cac trang thai ngat da luu
 
 	if (netif_queue_stopped(pkt->dev) && pkt->next == NULL) // neu hang doi dang bi dung thi bat lai
-		netif_wake_queue(pkt->dev);
+		netif_wake_queue(pkt->dev); //khoi dong lai hang doi cua driver khi da bi dung truoc do
 
 	pr_debug("release pkt: dev = %s\n", pkt->dev->name);
 }
@@ -170,7 +170,7 @@ int snull_priv_poll(struct napi_struct *napi, int budget)  // RX NAPI
 		memcpy(skb_put(skb, pkt->datalen), pkt->data, pkt->datalen);
 		skb->dev = dev;
 		skb->protocol = eth_type_trans(skb, dev);
-		skb->ip_summed = CHECKSUM_UNNECESSARY;
+		skb->ip_summed = CHECKSUM_UNNECESSARY; // khong kiem tra
 
 		print_hex_dump(KERN_DEBUG, "skb poll raw: ", DUMP_PREFIX_OFFSET,
 			       16, 1, skb->data, skb->len, true);
