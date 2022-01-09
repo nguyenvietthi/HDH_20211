@@ -245,6 +245,7 @@ void ldd_napi_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 
 
 static
+// cho phep netdev chap nhan cac paket de truyen 	
 int ldd_netdev_open(struct net_device *dev)
 {
 	/* request_region(), request_irq(), ....  (like fops->open) */
@@ -276,7 +277,7 @@ int ldd_netdev_release(struct net_device *dev)
 	pr_debug("========= release %s  ======= \n", dev->name);
 
 	snull_priv->rx_int_enabled = false;
-	netif_stop_queue(dev);
+	netif_stop_queue(dev); // danh dau device khong the truyen them packet nao nua
 	pr_debug("====== disable %px \n", &snull_priv->napi);
 	if (use_napi)
 		napi_disable(&snull_priv->napi);
