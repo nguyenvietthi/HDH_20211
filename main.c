@@ -22,12 +22,12 @@ module_param(lockup, int, 0);
 static int use_napi = 0;
 module_param(use_napi, int, 0);
 
-static struct net_device *net_devs[2];
+static struct net_device *net_devs[2]; 
 // nhan du lieu
-void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt)
+void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt) //module snull khai bao cau truc snull_priv
 {
 	struct sk_buff *skb;
-	struct snull_priv *snull_priv = netdev_priv(dev);
+	struct snull_priv *snull_priv = netdev_priv(dev); 
 
 	skb = dev_alloc_skb(pkt->datalen + 2); // cap phat bo nho cho skb
 	if (!skb) { // neu cap phat khong thanh cong
@@ -57,7 +57,7 @@ void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt)
 // lay lai packet cho vao pool
 void ldd_release_buffer(struct snull_packet *pkt)
 {
-	unsigned long flags;
+	unsigned long flags; //cac interface flags
 	struct snull_priv *snull_priv = netdev_priv(pkt->dev);
 	
 	spin_lock_irqsave(&snull_priv->lock, flags); // luu trang thai cac co ngat truoc do va vo hieu hoa ngat
@@ -76,7 +76,7 @@ static
 void ldd_enqueue_buf(struct net_device *dev, struct snull_packet *pkt)
 {
 	unsigned long flags;
-	struct snull_priv *snull_priv = netdev_priv(dev);
+	struct snull_priv *snull_priv = netdev_priv(dev); // driver truy cap con tro du lieu rieng tu
 
 	spin_lock_irqsave(&snull_priv->lock, flags);
 	pkt->next = snull_priv->rx_queue;  /* FIXME - misorders packets */
@@ -498,6 +498,7 @@ void snull_priv_init(struct net_device *dev)
 	dev->flags           |= IFF_NOARP;
 	dev->features        |= NETIF_F_HW_CSUM;
 
+	//cap phat va khoi tao dev-> priv
 	snull_priv = netdev_priv(dev);
 	memset(snull_priv, 0, sizeof(struct snull_priv));
 
@@ -511,14 +512,14 @@ void snull_priv_init(struct net_device *dev)
 }
 
 static
-void ldd_cleanup(void)
+void ldd_cleanup(void) //Huy dang ky cac interface, thuc hien don dep theo yeu cau va giai phong net_device tro lai he thong
 {
 	int i;
 	for (i = 0; i < 2; i++) {
 		if (net_devs[i]) {
-			unregister_netdev(net_devs[i]);
-			ldd_teardown_pool(net_devs[i]);
-			free_netdev(net_devs[i]);
+			unregister_netdev(net_devs[i]); //xoa interface khoi he thong
+			ldd_teardown_pool(net_devs[i]); //don dep
+			free_netdev(net_devs[i]);//tra lai net_devie cho he thong
 		}
 	}
 }
@@ -534,7 +535,7 @@ int __init m_init(void)
 	snull_priv = kzalloc(sizeof(struct snull_priv), GFP_KERNEL);
 	if (!snull_priv)
 		return -ENOMEM;
-
+	// Cap phat dong cho net_device	
 	net_devs[0] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
 				   NET_NAME_UNKNOWN, snull_priv_init);
 	net_devs[1] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
@@ -549,7 +550,7 @@ int __init m_init(void)
 	pr_debug("0 napi = %px\n", &snull_priv->napi);
 	snull_priv = netdev_priv(net_devs[1]);
 	pr_debug("1 napi = %px\n", &snull_priv->napi);
-
+	// sau khi gọi register_netdev, driver có thể được gọi để vận hành trên thiết bị
 	for (i = 0; i < 2;  i++) {
 		rv = ldd_setup_pool(net_devs[i]);
 		if (rv) {
