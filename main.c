@@ -284,7 +284,7 @@ int ldd_netdev_release(struct net_device *dev)
 }
 
 static
-int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)//cho phep netdev giao tiep vs userspace ma ko co syscall mac dinh
 {
 	pr_debug("ioctl\n");
 	return 0;
