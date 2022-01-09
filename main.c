@@ -143,7 +143,7 @@ void ldd_regular_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 
 //kieu gui nhan data polled
 static
-int snull_priv_poll(struct napi_struct *napi, int budget)
+int snull_priv_poll(struct napi_struct *napi, int budget)  // RX NAPI
 {
 	int rv, npackets = 0;
 	unsigned long flags;
@@ -154,7 +154,7 @@ int snull_priv_poll(struct napi_struct *napi, int budget)
 
 	pr_debug("========= budget: %d, dev = %s\n", budget, dev->name);
 
-	while (npackets < budget && snull_priv->rx_queue) {
+	while (npackets < budget && snull_priv->rx_queue) { // nhận 1 lần nhiều pkt
 		pr_debug("------ deque %s!\n", dev->name);
 		pkt = ldd_dequeue_buf(dev);
 		skb = dev_alloc_skb(pkt->datalen + 2);
@@ -225,10 +225,10 @@ void ldd_napi_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 	if (statusword & NETDEV_RX_INTR) {
 		pr_debug("schedule: %s, %s, napi=%px\n", dev->name,
 			 snull_priv->net_dev->name, &snull_priv->napi);
-			snull_priv->rx_int_enabled = false; /* Disable further interrupts */
+			snull_priv->rx_int_enabled = false; /* Disable further interrupts */ // không ngắt liên tục
 			napi_schedule(&snull_priv->napi);
 	}
-	if (statusword & NETDEV_TX_INTR) {
+	if (statusword & NETDEV_TX_INTR) { // nhận thì vẫn giống old API
         	/* a transmission is over: free the skb */
 		snull_priv->stats.tx_packets++;
 		snull_priv->stats.tx_bytes += snull_priv->tx_packetlen;
@@ -292,7 +292,7 @@ int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 
 // lay ra packet tu pool de dong goi
 static
-struct snull_packet *ldd_get_tx_buffer(struct net_device *dev)
+struct snull_packet *ldd_get_tx_buffer(struct net_device *dev) // lấy data để gửi ví dụ sn0 -> sn1
 {
 	unsigned long flags;
 	struct snull_priv *snull_priv = netdev_priv(dev);
@@ -314,8 +314,7 @@ struct snull_packet *ldd_get_tx_buffer(struct net_device *dev)
 }
 
 static
-int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
-{
+int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev) //gửi dữ liệu từ socket buffer(kernel) ra ngoài card mạng (chỉ để mô phỏng)
 	int rv, len;
 	struct iphdr *iphdr;
 	u32 *saddr, *daddr;
@@ -360,6 +359,7 @@ int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
 	dest_snull_priv = netdev_priv(dest_dev);
 
 	tx_buffer = ldd_get_tx_buffer(dev);
+
 	if(!tx_buffer) {
 		pr_debug("Out of tx buffer, len is %i\n",len);
 		return -ENOMEM;
@@ -369,10 +369,11 @@ int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
 	memcpy(tx_buffer->data, skb->data, len);
 	pr_debug("data from %s to %s\n", dev->name, dest_dev->name);
 
-	ldd_enqueue_buf(dest_dev, tx_buffer);
+	ldd_enqueue_buf(dest_dev, tx_buffer);// vứt tx buffer vào hàng đợi của device đích
+
 	if (dest_snull_priv->rx_int_enabled) {
 		dest_snull_priv->status |= NETDEV_RX_INTR;
-		ldd_interrupt(0, dest_dev, NULL);
+		ldd_interrupt(0, dest_dev, NULL); // mô phỏng ngắt nhận
 	}
 
 
@@ -409,6 +410,8 @@ int ldd_netdev_tx(struct sk_buff *skb, struct net_device *dev)
 	return ldd_netdev_hw_tx(skb, dev);
 }
 
+
+//khi ifconfig thì gọi hàm này để trả về các thông số
 static
 struct net_device_stats *ldd_netdev_stats(struct net_device *dev)
 {
@@ -554,7 +557,7 @@ int __init m_init(void)
 			goto out;
 		}
 
-		rv = register_netdev(net_devs[i]);
+		rv = register_netdev(net_devs[i]); // đăng ký driver
 		if (rv) {
 			pr_err("registering device %s failed\n",
 			       net_devs[i]->name);
