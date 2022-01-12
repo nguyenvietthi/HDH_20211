@@ -19,7 +19,6 @@ int main(int argc, char *argv[])
 
 	sk = socket(AF_INET, SOCK_STREAM, 0);
 	if (sk < 0) {
-		
 		perror("ERROR opening socket");
 		exit(1);
 	}
@@ -55,7 +54,6 @@ int main(int argc, char *argv[])
 	printf("ipclient: %s\n", str_cli_ip );
 	char str_cli_port[INET_ADDRSTRLEN];
 	printf("port: %d\n", ntohs(ip_client->sin_port));
-	
 	while (1) {
 		memset(client_buf, 0, 1024);
 		recv(confd, client_buf, 1024, 0);

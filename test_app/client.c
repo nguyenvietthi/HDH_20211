@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	struct sockaddr_in serv_addr;
 	char client_buf[1024];
 	char server_buf[1024];
-	char check[]="exitcd";
+	char check[]="exit";
 	
 
 	sk = socket(AF_INET, SOCK_STREAM, 0);

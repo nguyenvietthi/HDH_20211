@@ -22,12 +22,12 @@ module_param(lockup, int, 0);
 static int use_napi = 0;
 module_param(use_napi, int, 0);
 
-static struct net_device *net_devs[2];
+static struct net_device *net_devs[2]; 
 // nhan du lieu
-void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt)
+void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt) //module snull khai bao cau truc snull_priv
 {
 	struct sk_buff *skb;
-	struct snull_priv *snull_priv = netdev_priv(dev);
+	struct snull_priv *snull_priv = netdev_priv(dev); 
 
 	skb = dev_alloc_skb(pkt->datalen + 2); // cap phat bo nho cho skb
 	if (!skb) { // neu cap phat khong thanh cong
@@ -57,7 +57,7 @@ void snull_priv_rx(struct net_device *dev, struct snull_packet *pkt)
 // lay lai packet cho vao pool
 void ldd_release_buffer(struct snull_packet *pkt)
 {
-	unsigned long flags;
+	unsigned long flags; //cac interface flags
 	struct snull_priv *snull_priv = netdev_priv(pkt->dev);
 	
 	spin_lock_irqsave(&snull_priv->lock, flags); // luu trang thai cac co ngat truoc do va vo hieu hoa ngat
@@ -66,7 +66,7 @@ void ldd_release_buffer(struct snull_packet *pkt)
 	spin_unlock_irqrestore(&snull_priv->lock, flags); // mo khoa ngat va thuc hien cac trang thai ngat da luu
 
 	if (netif_queue_stopped(pkt->dev) && pkt->next == NULL) // neu hang doi dang bi dung thi bat lai
-		netif_wake_queue(pkt->dev);
+		netif_wake_queue(pkt->dev); //khoi dong lai hang doi cua driver khi da bi dung truoc do
 
 	pr_debug("release pkt: dev = %s\n", pkt->dev->name);
 }
@@ -76,7 +76,7 @@ static
 void ldd_enqueue_buf(struct net_device *dev, struct snull_packet *pkt)
 {
 	unsigned long flags;
-	struct snull_priv *snull_priv = netdev_priv(dev);
+	struct snull_priv *snull_priv = netdev_priv(dev); // driver truy cap con tro du lieu rieng tu
 
 	spin_lock_irqsave(&snull_priv->lock, flags);
 	pkt->next = snull_priv->rx_queue;  /* FIXME - misorders packets */
@@ -142,7 +142,7 @@ void ldd_regular_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 
 //kieu gui nhan data polled
 static
-int snull_priv_poll(struct napi_struct *napi, int budget)
+int snull_priv_poll(struct napi_struct *napi, int budget)  // RX NAPI
 {
 	int rv, npackets = 0;
 	unsigned long flags;
@@ -153,7 +153,7 @@ int snull_priv_poll(struct napi_struct *napi, int budget)
 
 	pr_debug("========= budget: %d, dev = %s\n", budget, dev->name);
 
-	while (npackets < budget && snull_priv->rx_queue) {
+	while (npackets < budget && snull_priv->rx_queue) { // nhận 1 lần nhiều pkt
 		pr_debug("------ deque %s!\n", dev->name);
 		pkt = ldd_dequeue_buf(dev);
 		skb = dev_alloc_skb(pkt->datalen + 2);
@@ -169,7 +169,7 @@ int snull_priv_poll(struct napi_struct *napi, int budget)
 		memcpy(skb_put(skb, pkt->datalen), pkt->data, pkt->datalen);
 		skb->dev = dev;
 		skb->protocol = eth_type_trans(skb, dev);
-		skb->ip_summed = CHECKSUM_UNNECESSARY;
+		skb->ip_summed = CHECKSUM_UNNECESSARY; // khong kiem tra
 
 		print_hex_dump(KERN_DEBUG, "skb poll raw: ", DUMP_PREFIX_OFFSET,
 			       16, 1, skb->data, skb->len, true);
@@ -224,10 +224,10 @@ void ldd_napi_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 	if (statusword & NETDEV_RX_INTR) {
 		pr_debug("schedule: %s, %s, napi=%px\n", dev->name,
 			 snull_priv->net_dev->name, &snull_priv->napi);
-			snull_priv->rx_int_enabled = false; /* Disable further interrupts */
+			snull_priv->rx_int_enabled = false; /* Disable further interrupts */ // không ngắt liên tục
 			napi_schedule(&snull_priv->napi);
 	}
-	if (statusword & NETDEV_TX_INTR) {
+	if (statusword & NETDEV_TX_INTR) { // nhận thì vẫn giống old API
         	/* a transmission is over: free the skb */
 		snull_priv->stats.tx_packets++;
 		snull_priv->stats.tx_bytes += snull_priv->tx_packetlen;
@@ -244,6 +244,7 @@ void ldd_napi_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 
 
 static
+// cho phep netdev chap nhan cac paket de truyen 	
 int ldd_netdev_open(struct net_device *dev)
 {
 	/* request_region(), request_irq(), ....  (like fops->open) */
@@ -275,7 +276,7 @@ int ldd_netdev_release(struct net_device *dev)
 	pr_debug("========= release %s  ======= \n", dev->name);
 
 	snull_priv->rx_int_enabled = false;
-	netif_stop_queue(dev);
+	netif_stop_queue(dev); // danh dau device khong the truyen them packet nao nua
 	pr_debug("====== disable %px \n", &snull_priv->napi);
 	if (use_napi)
 		napi_disable(&snull_priv->napi);
@@ -283,7 +284,7 @@ int ldd_netdev_release(struct net_device *dev)
 }
 
 static
-int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)//cho phep netdev giao tiep vs userspace ma ko co syscall mac dinh
 {
 	pr_debug("ioctl\n");
 	return 0;
@@ -291,7 +292,7 @@ int ldd_netdev_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 
 // lay ra packet tu pool de dong goi
 static
-struct snull_packet *ldd_get_tx_buffer(struct net_device *dev)
+struct snull_packet *ldd_get_tx_buffer(struct net_device *dev) // lấy data để gửi ví dụ sn0 -> sn1
 {
 	unsigned long flags;
 	struct snull_priv *snull_priv = netdev_priv(dev);
@@ -313,8 +314,7 @@ struct snull_packet *ldd_get_tx_buffer(struct net_device *dev)
 }
 
 static
-int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
-{
+int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev) //gửi dữ liệu từ socket buffer(kernel) ra ngoài card mạng (chỉ để mô phỏng)
 	int rv, len;
 	struct iphdr *iphdr;
 	u32 *saddr, *daddr;
@@ -359,6 +359,7 @@ int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
 	dest_snull_priv = netdev_priv(dest_dev);
 
 	tx_buffer = ldd_get_tx_buffer(dev);
+
 	if(!tx_buffer) {
 		pr_debug("Out of tx buffer, len is %i\n",len);
 		return -ENOMEM;
@@ -368,10 +369,11 @@ int ldd_netdev_hw_tx(struct sk_buff *skb, struct net_device *dev)
 	memcpy(tx_buffer->data, skb->data, len);
 	pr_debug("data from %s to %s\n", dev->name, dest_dev->name);
 
-	ldd_enqueue_buf(dest_dev, tx_buffer);
+	ldd_enqueue_buf(dest_dev, tx_buffer);// vứt tx buffer vào hàng đợi của device đích
+
 	if (dest_snull_priv->rx_int_enabled) {
 		dest_snull_priv->status |= NETDEV_RX_INTR;
-		ldd_interrupt(0, dest_dev, NULL);
+		ldd_interrupt(0, dest_dev, NULL); // mô phỏng ngắt nhận
 	}
 
 
@@ -408,6 +410,8 @@ int ldd_netdev_tx(struct sk_buff *skb, struct net_device *dev)
 	return ldd_netdev_hw_tx(skb, dev);
 }
 
+
+//khi ifconfig thì gọi hàm này để trả về các thông số
 static
 struct net_device_stats *ldd_netdev_stats(struct net_device *dev)
 {
@@ -494,6 +498,7 @@ void snull_priv_init(struct net_device *dev)
 	dev->flags           |= IFF_NOARP;
 	dev->features        |= NETIF_F_HW_CSUM;
 
+	//cap phat va khoi tao dev-> priv
 	snull_priv = netdev_priv(dev);
 	memset(snull_priv, 0, sizeof(struct snull_priv));
 
@@ -507,14 +512,14 @@ void snull_priv_init(struct net_device *dev)
 }
 
 static
-void ldd_cleanup(void)
+void ldd_cleanup(void) //Huy dang ky cac interface, thuc hien don dep theo yeu cau va giai phong net_device tro lai he thong
 {
 	int i;
 	for (i = 0; i < 2; i++) {
 		if (net_devs[i]) {
-			unregister_netdev(net_devs[i]);
-			ldd_teardown_pool(net_devs[i]);
-			free_netdev(net_devs[i]);
+			unregister_netdev(net_devs[i]); //xoa interface khoi he thong
+			ldd_teardown_pool(net_devs[i]); //don dep
+			free_netdev(net_devs[i]);//tra lai net_devie cho he thong
 		}
 	}
 }
@@ -530,7 +535,7 @@ int __init m_init(void)
 	snull_priv = kzalloc(sizeof(struct snull_priv), GFP_KERNEL);
 	if (!snull_priv)
 		return -ENOMEM;
-
+	// Cap phat dong cho net_device	
 	net_devs[0] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
 				   NET_NAME_UNKNOWN, snull_priv_init);
 	net_devs[1] = alloc_netdev(sizeof(struct snull_priv), "sn%d",
@@ -545,7 +550,7 @@ int __init m_init(void)
 	pr_debug("0 napi = %px\n", &snull_priv->napi);
 	snull_priv = netdev_priv(net_devs[1]);
 	pr_debug("1 napi = %px\n", &snull_priv->napi);
-
+	// sau khi gọi register_netdev, driver có thể được gọi để vận hành trên thiết bị
 	for (i = 0; i < 2;  i++) {
 		rv = ldd_setup_pool(net_devs[i]);
 		if (rv) {
@@ -553,7 +558,7 @@ int __init m_init(void)
 			goto out;
 		}
 
-		rv = register_netdev(net_devs[i]);
+		rv = register_netdev(net_devs[i]); // đăng ký driver
 		if (rv) {
 			pr_err("registering device %s failed\n",
 			       net_devs[i]->name);
