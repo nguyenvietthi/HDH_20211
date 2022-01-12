@@ -19,13 +19,13 @@ int main(int argc, char *argv[])
 
 	sk = socket(AF_INET, SOCK_STREAM, 0);
 	if (sk < 0) {
-		
 		perror("ERROR opening socket");
 		exit(1);
 	}
 
 	memset(&ifr, 0, sizeof(ifr));
 	strncpy(ifr.ifr_name, "sn0", 5);
+	
 	if (setsockopt(sk, SOL_SOCKET, SO_BINDTODEVICE, (void*)(&ifr), sizeof(ifr)) < 0) {
 		perror("setsocket filed\n");
 		exit(1);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	rv = listen(sk, 10);
+	rv = listen(sk, 10);// nhận tối đa 10 client
 	if (rv) {
 		perror("listen failed\n");
 		exit(1);
@@ -50,12 +50,14 @@ int main(int argc, char *argv[])
 	confd = accept(sk, (struct sockaddr*)&serv_addr, (socklen_t*)&addrlen);	
 	printf("accept ==== \n");
 	char str_cli_ip[INET_ADDRSTRLEN];
+
 	struct sockaddr_in* ip_client = (struct sockaddr_in*)&serv_addr;
-	inet_ntop(AF_INET, &ip_client->sin_addr, str_cli_ip, INET_ADDRSTRLEN);
+	inet_ntop(AF_INET, &ip_client->sin_addr, str_cli_ip, INET_ADDRSTRLEN);//đọc địa chỉ IP của client
+
 	printf("ipclient: %s\n", str_cli_ip );
 	char str_cli_port[INET_ADDRSTRLEN];
 	printf("port: %d\n", ntohs(ip_client->sin_port));
-	
+
 	while (1) {
 		memset(client_buf, 0, 1024);
 		recv(confd, client_buf, 1024, 0);
@@ -73,8 +75,5 @@ int main(int argc, char *argv[])
 		}
 		send(confd,server_buf,1024,0);
 	}
-
-
-
 	return 0;
 }
