@@ -101,7 +101,6 @@ struct snull_packet *ldd_dequeue_buf(struct net_device *dev)
 }
 
 // kieu gui nhan data gian doan
-
 static
 void ldd_regular_interrupt(int irq, void *dev_id, struct pt_regs *regs)
 {
